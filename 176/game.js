@@ -16,6 +16,20 @@ $(document).ready(function () {
 })
 
 function fillBlanks () {
+    const randomWord = words[Math.floor(Math.random()*words.length)]
+
+    //make sure blanks to begin 
+    $("#blanks").empty()
+    //show blanks using span tag
+    for(var i = 0;  i < randomWord.inputs; i++) {
+        input_html = `<span class = "fill_blanks" id = "input_${i}">_</span>`
+        $("#blanks").append(input_html)
+    }
+
+    //show hint
+    $("#hint").html(randomWord.category)
+
+    var gameOver = false
     $(".clickable").click(function () {
         var correctGuess = false;
 
@@ -28,7 +42,7 @@ function fillBlanks () {
         //Loop through all the letters
         for (var i = 0; i < randomWord.word.length; i++) {
             //Check if the character matches the id of the button
-            if (randomWord.word.ChartAt(i).toLowerCase() == id) {
+            if (randomWord.word.charAt(i).toLowerCase() == id) {
                 //check if the life is still left and blank is empt/filled
                 if (life > 0 && ($(".fill_blanks").eq(i).html() == "_" || $(".fill_blanks").eq(i).html() == id)) {
 
@@ -44,6 +58,14 @@ function fillBlanks () {
                     }
                 }
             }
+        }
+
+        if (life > 0 && correctGuess!=true && gameOver!=true){
+            life = life-1
+            $("#life").text(life)
+        }
+        else if (life == 0){
+            $("#result").text("You Lost :(")
         }
     })
 }
